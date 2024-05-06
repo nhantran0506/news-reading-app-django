@@ -48,10 +48,16 @@ INSTALLED_APPS = [
 
     # Third-party apps
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
 
     # Required apps
-
+    'apps.roles',
+    'apps.users',
+    'apps.notifications',
+    'apps.articles',
+    'apps.comments',
+    'apps.commissions',
+    'apps.commission_user'
 ]
 
 MIDDLEWARE = [
@@ -109,6 +115,13 @@ DATABASES = {
         },
     },
 }
+
+# JWT authentication settings
+AUTH_USER_MODEL = 'users.User'
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend'
+]
 
 # Other project-specific settings
 REST_FRAMEWORK = {
