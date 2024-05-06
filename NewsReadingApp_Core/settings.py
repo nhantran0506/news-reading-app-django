@@ -57,7 +57,8 @@ INSTALLED_APPS = [
     'apps.articles',
     'apps.comments',
     'apps.commissions',
-    'apps.commission_user'
+    'apps.commission_user',
+    'apps.login'
 ]
 
 MIDDLEWARE = [
