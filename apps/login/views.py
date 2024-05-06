@@ -6,6 +6,13 @@ from rest_framework.views import APIView
 from apps.users.serializers import UserSerializer
 
 class LoginView(APIView):
+  def get(self, request):
+    return Response({'error': 'This endpoint only accepts POST requests. Please send your credentials in a POST request with the following fields.',
+                     'example': {
+                       'username': 'f0o',
+                       'password': 'b4r'
+                     }}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
   def post(self, request):
     username = request.data.get('username')
     password = request.data.get('password')
