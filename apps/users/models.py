@@ -17,7 +17,7 @@ class User(AbstractBaseUser, PermissionsMixin):
   password = models.CharField(max_length=128)
   first_name = models.CharField(max_length=50, default='')
   last_name = models.CharField(max_length=50, default='')
-  role = models.CharField(choices=[(role.name, role.value) for role in Roles], max_length=15)
+  role = models.CharField(choices=Roles.choices(), max_length=15)
 
   objects = UserManager()
 
