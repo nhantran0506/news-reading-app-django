@@ -2,8 +2,7 @@ from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from apps.users.serializers import UserSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
 
 class LoginView(APIView):
   def get(self, request):
@@ -19,7 +18,10 @@ class LoginView(APIView):
 
     user = authenticate(request=self.request, username=username, password=password)
     if user is not None:
-      user_serializer = UserSerializer(user)
-      return Response(user_serializer.data, status=status.HTTP_200_OK)
+      refresh = RefreshToken.for_user(user)
+      return Response({
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+      })
     else:
       return Response({'error': 'Invalid username or password'}, status=status.HTTP_400_BAD_REQUEST)
