@@ -1,8 +1,11 @@
 from rest_framework import serializers
 from apps.articles.models import Article
 from apps.roles.enums import Roles
+from apps.comments.serializers import CommentSerializer
 
 class ArticleSerializer(serializers.ModelSerializer):
+  comments = CommentSerializer(many=True, read_only=True)
+
   def create(self, validated_data):
     user = validated_data['user']
     allowed_roles = [role.value for role in Roles if role != Roles.Reader]
