@@ -59,7 +59,8 @@ INSTALLED_APPS = [
     'apps.commissions',
     'apps.commission_user',
     'apps.login',
-    'apps.followers'
+    'apps.followers',
+    'apps.ratings'
 ]
 
 MIDDLEWARE = [
