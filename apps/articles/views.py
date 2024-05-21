@@ -4,7 +4,6 @@ from rest_framework import status
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lsa import LsaSummarizer
-from io import StringIO
 
 class SummarizeView(APIView):
     def post(self, request):

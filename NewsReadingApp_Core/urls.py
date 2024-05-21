@@ -19,12 +19,11 @@ from django.urls import path, include
 from routers import router
 
 from apps.login.views import LoginView
-from apps.articles.views import *
+from apps.articles.views import SummarizeView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include((router.urls, 'core_api'), namespace='core_api')),
     path('api/login/', LoginView.as_view(), name='login'),
-
-    path('api/summary', SummarizeView.as_view(), name='summary')
+    path('api/summary/', SummarizeView.as_view(), name='summary'),
 ]
