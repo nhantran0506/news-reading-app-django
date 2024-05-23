@@ -10,11 +10,12 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ("articles", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name="Article",
+            name="Notification",
             fields=[
                 (
                     "id",
@@ -25,32 +26,25 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("title", models.CharField(max_length=255)),
-                ("content", models.TextField()),
+                ("message", models.TextField()),
+                ("timestamp", models.DateTimeField(auto_now_add=True)),
                 (
-                    "category",
-                    models.CharField(
-                        choices=[
-                            ("PERSONAL", "PERSONAL"),
-                            ("SPORT", "SPORT"),
-                            ("HEALTH", "HEALTH"),
-                        ],
-                        max_length=20,
-                    ),
-                ),
-                ("created_at", models.DateTimeField(auto_now_add=True)),
-                ("updated_at", models.DateTimeField(auto_now=True)),
-                (
-                    "user",
+                    "article",
                     models.ForeignKey(
                         on_delete=django.db.models.deletion.CASCADE,
-                        related_name="articles",
+                        to="articles.article",
+                    ),
+                ),
+                (
+                    "recipient",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
                         to=settings.AUTH_USER_MODEL,
                     ),
                 ),
             ],
             options={
-                "db_table": "articles",
+                "db_table": "notifications",
             },
         ),
     ]

@@ -23,17 +23,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+# SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = "django-insecure-7$p0e3z1(d1peg=&ltrzc2if97oxa9on+efat2=j9y!y87mql&"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-ENV = os.getenv('ENV', 'development')
+# ENV = os.getenv('ENV', 'development')
+ENV="development"
 
 if ENV == 'production':
     DEBUG = False
 else:
     DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -53,14 +55,16 @@ INSTALLED_APPS = [
     # Required apps
     'apps.roles',
     'apps.users',
-    'apps.notifications',
+    #'apps.notifications',
     'apps.articles',
     'apps.comments',
     'apps.commissions',
     'apps.commission_user',
     'apps.login',
     'apps.followers',
-    'apps.ratings'
+    'apps.ratings',
+    #'apps.category',
+    'apps.notify',
 ]
 
 MIDDLEWARE = [
@@ -75,8 +79,10 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000',
-    'http://127.0.0.1:3000',
+    'http://localhost:*',
+    'http://127.0.0.1:8000',
+    'http://localhost:5555',
+    'ws://127.0.0.1:56421',
 ]
 
 ROOT_URLCONF = 'NewsReadingApp_Core.urls'
@@ -102,10 +108,14 @@ WSGI_APPLICATION = 'NewsReadingApp_Core.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-MONGODB_NAME = os.getenv('MONGODB_NAME')
-MONGODB_URI = os.getenv('MONGODB_URI')
-MONGODB_USERNAME = os.getenv('MONGODB_USERNAME')
-MONGODB_PASSWORD = os.getenv('MONGODB_PASSWORD')
+# MONGODB_NAME = os.getenv('MONGODB_NAME')
+# MONGODB_URI = os.getenv('MONGODB_URI')
+# MONGODB_USERNAME = os.getenv('MONGODB_USERNAME')
+# MONGODB_PASSWORD = os.getenv('MONGODB_PASSWORD')
+MONGODB_NAME="news_reading_app"
+MONGODB_URI="mongodb+srv://cluster0.7pkab72.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/"
+MONGODB_USERNAME="trg552003"
+MONGODB_PASSWORD="trg552003"
 
 DATABASES = {
     'default': {
