@@ -16,5 +16,5 @@ urlpatterns = [
     path('api/followers/', followers_list, name='followers-list'),
     path('api/following/', following_list, name='following-list'),
     path('articles/category/', articles_by_category, name='articles_by_category'),
-    path('api/notify/', article_publish_notification, name='article-publish-notification'),
+    path('api/user_notifications/', user_notifications, name='user-notifications'), 
 ]
