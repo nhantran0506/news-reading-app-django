@@ -7,7 +7,11 @@ from .serializers import ArticleSerializer
 from apps.category.enums import Category
 
 @api_view(['GET'])
-def articles_by_category(request, category_name):
+def articles_by_category(request):
+    category_name = request.GET.get('category_name')
+    if not category_name:
+        return Response({'error': 'category_name parameter is required'}, status=400)
+    
     category_value = None
     for category in Category:
         if category.name.lower() == category_name.lower():
@@ -20,4 +24,3 @@ def articles_by_category(request, category_name):
     articles = Article.objects.filter(category=category_value)
     serializer = ArticleSerializer(articles, many=True)
     return Response(serializer.data)
-

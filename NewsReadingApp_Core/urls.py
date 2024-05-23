@@ -1,19 +1,3 @@
-"""
-URL configuration for NewsReadingApp_Core project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/5.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path, include
 from routers import router
@@ -21,7 +5,7 @@ from routers import router
 from apps.login.views import LoginView
 from apps.articles.views import SummarizeView
 from apps.followers.views import *
-from apps.category.views import articles_by_category
+from apps.category.views import *
 from apps.notify.views import *
 
 urlpatterns = [
@@ -29,8 +13,8 @@ urlpatterns = [
     path('api/', include((router.urls, 'core_api'), namespace='core_api')),
     path('api/login/', LoginView.as_view(), name='login'),
     path('api/summary/', SummarizeView.as_view(), name='summary'),
-    path('api/followers/<int:user_id>/', FollowersListView.as_view(), name='followers-list'),
-    path('api/following/<int:user_id>/', FollowingListView.as_view(), name='following-list'),
-    path('articles/category/<str:category_name>/', articles_by_category, name='articles_by_category'),
-    path('api/notify/<int:user_id>/<str:articles_title>/', ArticlePublishNotificationView.as_view(), name='article-publish-notification'),
+    path('api/followers/', followers_list, name='followers-list'),
+    path('api/following/', following_list, name='following-list'),
+    path('articles/category/', articles_by_category, name='articles_by_category'),
+    path('api/notify/', article_publish_notification, name='article-publish-notification'),
 ]
