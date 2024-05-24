@@ -17,7 +17,9 @@ def followers_list(request):
     except User.DoesNotExist:
         return Response({"error": "User not found"}, status=404)
     
+ 
     followers = user.followers.all().select_related('follower')
+
     serializer = UserSerializer([f.follower for f in followers], many=True)
     return Response(serializer.data)
 

@@ -1,16 +1,5 @@
 from rest_framework import serializers
-from apps.followers.models import Follower
-
-class FollowerSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = Follower
-    fields = '__all__'
-
-
-from rest_framework import serializers
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
+from apps.users.models import User
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
