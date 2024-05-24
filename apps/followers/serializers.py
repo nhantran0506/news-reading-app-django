@@ -9,8 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class FollowerSerializer(serializers.ModelSerializer):
     follower = UserSerializer()
-    user = UserSerializer()
 
     class Meta:
         model = Follower
-        fields = ['user', 'follower']
+        fields = ['id', 'follower']
