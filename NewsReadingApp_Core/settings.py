@@ -22,9 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = os.getenv('SECRET_KEY')
-# SECRET_KEY = "django-insecure-7$p0e3z1(d1peg=&ltrzc2if97oxa9on+efat2=j9y!y87mql&"
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # ENV = os.getenv('ENV', 'development')
@@ -110,12 +108,7 @@ WSGI_APPLICATION = 'NewsReadingApp_Core.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 # MONGODB_NAME = os.getenv('MONGODB_NAME')
 # MONGODB_URI = os.getenv('MONGODB_URI')
-# MONGODB_USERNAME = os.getenv('MONGODB_USERNAME')
-# MONGODB_PASSWORD = os.getenv('MONGODB_PASSWORD')
-# MONGODB_NAME="news_reading_app"
-# MONGODB_URI="mongodb+srv://cluster0.7pkab72.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0/"
-# MONGODB_USERNAME="trg552003"
-# MONGODB_PASSWORD="trg552003"
+
 
 DATABASES = {
     'default': {
