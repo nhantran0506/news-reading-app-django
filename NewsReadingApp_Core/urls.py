@@ -9,6 +9,7 @@ from apps.category.views import *
 from apps.notify.views import *
 
 urlpatterns = [
+    path('/', include((router.urls, 'core_api'), namespace='core_api')),
     path('admin/', admin.site.urls),
     path('api/', include((router.urls, 'core_api'), namespace='core_api')),
     path('api/login/', LoginView.as_view(), name='login'),
