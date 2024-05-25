@@ -2,11 +2,12 @@ from rest_framework import serializers
 from apps.articles.models import Article
 from apps.roles.enums import Roles
 from apps.comments.serializers import CommentSerializer
-from apps.users.serializers import UserSerializer  # Import the UserSerializer
+from apps.users.serializers import UserSerializer
 
 class ArticleSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True, read_only=True)
-    user = UserSerializer(read_only=True)  # Include the user serializer
+    user_id = serializers.ReadOnlyField(source='user.id') 
+    username = serializers.ReadOnlyField(source='user.username')  
 
     def create(self, validated_data):
         user = validated_data['user']
@@ -19,7 +20,7 @@ class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         fields = '__all__'
-        read_only_fields = ['created_at', 'updated_at']
+        read_only_fields = ['created_at', 'updated_at', 'user_id', 'username']  
         extra_kwargs = {
             'user': {'required': True}
         }

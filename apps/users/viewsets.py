@@ -25,7 +25,12 @@ class UserViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         if serializer.is_valid():
-            user = serializer.save()
+           
+            user = serializer.save(
+                first_name=request.data.get('first_name'),
+                last_name=request.data.get('last_name'),
+                role=request.data.get('role') 
+            )
             password = serializer.validated_data.get('password')
             if password:
                 user.set_password(password)
