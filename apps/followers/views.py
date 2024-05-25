@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from django.contrib.auth import get_user_model
 from .models import Follower
-from .serializers import FollowerSerializer, UserSerializer
+from .serializers import FollowerSerializer, UserSerializer, FollowerCreateSerializer
 
 User = get_user_model()
 
@@ -58,3 +58,32 @@ def following_list(request):
     
     # Return a response with the serialized data
     return Response(serializer.data)
+
+
+
+
+from rest_framework import viewsets
+from rest_framework.permissions import AllowAny
+from apps.followers.models import Follower
+from apps.followers.serializers import FollowerSerializer
+
+class FollowerViewSet(viewsets.ModelViewSet):
+    queryset = Follower.objects.all()
+    permission_classes = [AllowAny]
+
+    def get_serializer_class(self):
+        if self.action in ['create', 'update']:
+            return FollowerCreateSerializer
+        return FollowerSerializer
+
+    def create(self, request, *args, **kwargs):
+        user_id = request.data.get('user')
+        follower_id = request.data.get('follower')
+        
+        if not user_id or not follower_id:
+            return Response({'error': 'Both user and follower IDs are required.'}, status=400)
+        
+        if user_id == follower_id:
+            return Response({'error': 'User cannot follow themselves.'}, status=400)
+        
+        return super().create(request, *args, **kwargs)
