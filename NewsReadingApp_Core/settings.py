@@ -19,7 +19,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'quykuro1234567890@gmail.com'
-EMAIL_HOST_PASSWORD = 'muoo tnsa kymm qjmc'
+EMAIL_HOST_PASSWORD = os.getenv('PASSAPP')
 DEFAULT_FROM_EMAIL = 'quykuro1234567890@gmail.com'
 
 
