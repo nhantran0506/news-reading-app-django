@@ -35,7 +35,7 @@ if ENV == 'production':
 else:
     DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'news-reading-app-django.onrender.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'news-reading-app-django.onrender.com', '192.168.56.1']
 
 
 # Application definition
