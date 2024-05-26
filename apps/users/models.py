@@ -25,12 +25,15 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(unique=True, max_length=30)
-    password = models.CharField(max_length=128)
+    # password = models.CharField(max_length=128)
     first_name = models.CharField(max_length=50, default='')
     last_name = models.CharField(max_length=50, default='')
     role = models.CharField(choices=Roles.choices(), max_length=15)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+
+    reset_code = models.CharField(max_length=6, blank=True, null=True)
+    reset_code_expiry = models.DateTimeField(blank=True, null=True)
 
     objects = UserManager()
 

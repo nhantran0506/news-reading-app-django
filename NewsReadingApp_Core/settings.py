@@ -14,6 +14,16 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'quykuro1234567890@gmail.com'
+EMAIL_HOST_PASSWORD = 'muoo tnsa kymm qjmc'
+DEFAULT_FROM_EMAIL = 'quykuro1234567890@gmail.com'
+
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent

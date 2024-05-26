@@ -7,6 +7,7 @@ from apps.articles.views import SummarizeView
 from apps.followers.views import *
 from apps.category.views import *
 from apps.notify.views import *
+from apps.users.views import *
 
 urlpatterns = [
     path('/', include((router.urls, 'core_api'), namespace='core_api')),
@@ -18,4 +19,6 @@ urlpatterns = [
     path('api/following/', following_list, name='following-list'),
     path('articles/category/', articles_by_category, name='articles_by_category'),
     path('api/user_notifications/', user_notifications, name='user-notifications'), 
+    path('api/forgot-password/', ForgotPasswordView.as_view(), name='forgot-password'),
+    path('api/reset-password/', ResetPasswordView.as_view(), name='reset-password'),
 ]
