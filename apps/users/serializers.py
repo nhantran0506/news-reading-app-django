@@ -31,7 +31,7 @@ from django.core.mail import send_mail
 def send_reset_email(to_email, reset_code):
     subject = 'Your Password Reset Code'
     message = f'Your password reset code is {reset_code}. It will expire in 10 minutes.'
-    send_mail(subject, message, 'your-email@example.com', [to_email])
+    send_mail(subject, message, 'quykuro1234567890@gmail.com', [to_email])
 
 class ForgotPasswordSerializer(serializers.Serializer):
     username = serializers.EmailField()
