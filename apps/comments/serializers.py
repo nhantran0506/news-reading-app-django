@@ -8,7 +8,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Comment
-        fields = ['id', 'user_id', 'username', 'content', 'created_at', 'updated_at']
+        fields = '__all__'
         read_only_fields = ['created_at', 'updated_at', 'user_id', 'username', 'created_at', 'updated_at']  # Make user_id and username read-only
         extra_kwargs = {
             'user': {'required': True},
