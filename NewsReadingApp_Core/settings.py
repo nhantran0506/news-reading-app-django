@@ -35,6 +35,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECRET_KEY = os.getenv('SECRET_KEY')
 SECRET_KEY = os.getenv('SECRETKEY')
 
+
 # SECURITY WARNING: don't run with debug turned on in production!
 # ENV = os.getenv('ENV', 'development')
 ENV="development"
