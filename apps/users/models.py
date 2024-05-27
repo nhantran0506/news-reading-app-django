@@ -25,6 +25,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(unique=True, max_length=30)
+    avt_image = models.ImageField(null=True,blank=True)
     # password = models.CharField(max_length=128)
     first_name = models.CharField(max_length=50, default='')
     last_name = models.CharField(max_length=50, default='')

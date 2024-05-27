@@ -1,10 +1,31 @@
 from rest_framework import serializers
 from apps.users.models import User
+import base64
+from django.core.files.base import ContentFile
+
+class Base64ImageField(serializers.ImageField):
+    def to_representation(self, value):
+        if not value:
+            return None
+        try:
+            with open(value.path, 'rb') as f:
+                return base64.b64encode(f.read()).decode()
+        except Exception as e:
+            return str(e)
+
+    def to_internal_value(self, data):
+        if isinstance(data, str) and data.startswith('data:image'):
+            format, imgstr = data.split(';base64,')
+            ext = format.split('/')[-1]
+            data = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+        return super().to_internal_value(data)
 
 class UserSerializer(serializers.ModelSerializer):
+    avt_image = Base64ImageField(required=False, allow_null=True)
+
     class Meta:
         model = User
-        fields = ['id', 'username', 'password', 'first_name', 'last_name', 'role']
+        fields = ['id', 'username', 'password', 'first_name', 'last_name', 'role', 'avt_image']
         extra_kwargs = {
             'username': {'required': False},
             'password': {'write_only': True, 'required': False},
@@ -12,11 +33,19 @@ class UserSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         password = validated_data.pop('password', None)
+        avt_image = validated_data.pop('avt_image', None)
+        
         instance = super().update(instance, validated_data)
+        
         if password:
             instance.set_password(password)
-            instance.save()
+        
+        if avt_image:
+            instance.avt_image = avt_image
+        
+        instance.save()
         return instance
+
     
 
 
