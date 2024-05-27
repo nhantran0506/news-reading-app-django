@@ -4,7 +4,7 @@ from apps.users.models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'password', 'first_name', 'last_name', 'role', 'is_active']
+        fields = ['id', 'username', 'password', 'first_name', 'last_name', 'role']
         extra_kwargs = {
             'username': {'required': False},
             'password': {'write_only': True, 'required': False},
@@ -68,12 +68,21 @@ class ResetPasswordSerializer(serializers.Serializer):
             raise serializers.ValidationError("Reset code has expired.")
         return data
 
+    def update(self, instance, validated_data):
+        new_password = validated_data.pop('new_password', None)
+        if new_password:
+            instance.set_password(new_password)
+            instance.reset_code = None  
+            instance.reset_code_expiry = None
+            instance.save()
+        return instance
+
     def save(self):
-        username = self.validated_data['username']
-        user = User.objects.get(username=username)
-        user.set_password(self.validated_data['new_password'])
-        user.reset_code = None  
-        user.reset_code_expiry = None
-        user.save()
-        return user
+        validated_data = self.validated_data
+        try:
+            user = User.objects.get(username=validated_data['username'])
+        except User.DoesNotExist:
+            raise serializers.ValidationError("User with this username does not exist.")
+        return self.update(user, validated_data)
+
 
