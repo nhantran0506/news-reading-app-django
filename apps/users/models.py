@@ -24,13 +24,16 @@ class UserManager(BaseUserManager):
         return self.create_user(username, password, **extra_fields)
 
 class User(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(unique=True, max_length=30)
-    avt_image = models.TextField(null=True,blank=True)
-    # password = models.CharField(max_length=128)
+    username = models.EmailField(unique=True, max_length=255)
+    avt_image = models.TextField(null=True, blank=True)
     first_name = models.CharField(max_length=50, default='')
     last_name = models.CharField(max_length=50, default='')
     role = models.CharField(choices=Roles.choices(), max_length=15)
-
+    
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    is_superuser = models.BooleanField(default=False)
+    
     reset_code = models.CharField(max_length=6, blank=True, null=True)
     reset_code_expiry = models.DateTimeField(blank=True, null=True)
 
