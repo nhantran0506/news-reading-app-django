@@ -10,43 +10,54 @@ from apps.articles.models import Article
 from apps.category.enums import Category
 from apps.comments.models import Comment
 
-class UserTestCase(TestCase):
+from django.test import TestCase
+from rest_framework.test import APIClient
+from rest_framework import status
+from apps.users.models import User
+
+class UserViewSetTestCase(TestCase):
     def setUp(self):
         self.client = APIClient()
-        self.user_data = {
-            'username': 'hehe@gmail.com',
-            'password': '1',
-            'first_name': 'Test',
+        self.existing_user_data = {
+            'username': 'existinguser@example.com',
+            'first_name': 'Existing',
             'last_name': 'User',
             'role': Roles.Author.value,
+            'password': 'testpassword123'
         }
-        self.user = User.objects.create_user(**self.user_data)
+        self.user = User.objects.create_user(**self.existing_user_data)
+
+        self.new_user_data = {
+            'username': 'newuser@example.com',
+            'first_name': 'New',
+            'last_name': 'User',
+            'role': Roles.Author.value,
+            'password': 'testpassword123'
+        }
 
     def test_create_user(self):
-        response = self.client.post(reverse('core_api:users-list'), self.user_data)
+        response = self.client.post('/api/users/', self.new_user_data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        user = User.objects.filter(username=self.user_data['username'])
-        self.assertTrue(user.exists())
-        self.assertEqual(user.first().first_name, self.user_data['username'])
+        self.assertEqual(User.objects.count(), 2)
+        self.assertEqual(User.objects.get(username='newuser@example.com').username, 'newuser@example.com')
 
 
     def test_get_user(self):
-        response = self.client.get(reverse('core_api:users-detail', kwargs={'pk': self.user.pk}))
+        response = self.client.get(f'/api/users/{self.user.id}/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['username'], self.user.username)
 
     def test_update_user(self):
-        new_data = {'first_name': 'Updated'}
-        response = self.client.patch(reverse('core_api:users-detail', kwargs={'pk': self.user.pk}), new_data)
+        update_data = {'first_name': 'Updated'}
+        response = self.client.patch(f'/api/users/{self.user.id}/', update_data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(User.objects.get(username=self.user_data['username']).first_name, 'Updated')
-
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.first_name, 'Updated')
 
     def test_delete_user(self):
-        response = self.client.delete(reverse('core_api:users-detail', kwargs={'pk': self.user.pk}))
+        response = self.client.delete(f'/api/users/{self.user.id}/')
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(User.objects.count(), 0)
-
 
     def test_forgot_password(self):
         response = self.client.post(reverse('forgot-password'), {'username': self.user.username})
@@ -134,7 +145,7 @@ class ArticleTestCase(TestCase):
         }
 
     def test_create_article(self):
-        response = self.client.post(reverse('core_api:articles-list'), self.article_data)
+        response = self.client.post('/api/articles/', self.article_data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Article.objects.count(), 1)
         self.assertEqual(Article.objects.get(title='Test Article').user, self.user)
@@ -171,7 +182,7 @@ class CommentTestCase(TestCase):
             'last_name': 'One',
             'role': Roles.Author.value,
         }
-        self.user = User.objects.create_user(**self.user_data)
+        self.user = User.objects.create(**self.user_data)
         self.article_data = {
             'title': 'Test Article',
             'content': 'This is a test article.',
@@ -186,7 +197,7 @@ class CommentTestCase(TestCase):
         }
 
     def test_create_comment(self):
-        response = self.client.post(reverse('core_api:comments-list'), self.comment_data)
+        response = self.client.post('/api/comments/', self.comment_data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Comment.objects.count(), 1)
         self.assertEqual(Comment.objects.get(content='This is a test comment.').user, self.user)
