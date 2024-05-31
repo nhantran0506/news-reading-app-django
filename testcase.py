@@ -182,7 +182,7 @@ class CommentTestCase(TestCase):
             'last_name': 'One',
             'role': Roles.Author.value,
         }
-        self.user = User.objects.create(**self.user_data)
+        self.user = User.objects.create_user(**self.user_data)
         self.article_data = {
             'title': 'Test Article',
             'content': 'This is a test article.',
