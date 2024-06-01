@@ -49,7 +49,7 @@ class UserViewSetTestCase(TestCase):
 
     def test_update_user(self):
         update_data = {'first_name': 'Updated'}
-        response = self.client.patch(f'/api/users/{self.user.id}/', update_data)
+        response = self.client.put(f'/api/users/{self.user.id}/', update_data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.user.refresh_from_db()
         self.assertEqual(self.user.first_name, 'Updated')
@@ -74,6 +74,20 @@ class UserViewSetTestCase(TestCase):
         response = self.client.post(reverse('reset-password'), {'username': user.username, 'reset_code': user.reset_code, 'new_password': 'newpassword'})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(User.objects.get(username=self.user.username).check_password('newpassword'))
+    
+    def test_create_invalid_user(self):
+        invalid_user_data = self.new_user_data.copy()
+        invalid_user_data['username'] = 'hehe'  
+        response = self.client.post('/api/users/', invalid_user_data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    
+    def test_get_non_existent_user(self):
+        response = self.client.get('/api/users/9999/')  
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+    
+
+
+
 
 
 
@@ -145,7 +159,14 @@ class ArticleTestCase(TestCase):
         }
 
     def test_create_article(self):
-        response = self.client.post('/api/articles/', self.article_data)
+        article_data = {
+            'title': 'Test Article',
+            'content': 'This is a test article.',
+            'user': self.user,
+            'category': Category.EDUCATION.value,
+    
+        }
+        response = self.client.post('/api/articles/', article_data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Article.objects.count(), 1)
         self.assertEqual(Article.objects.get(title='Test Article').user, self.user)
